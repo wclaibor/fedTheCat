@@ -3,22 +3,21 @@
  * This is only a minimal backend to get started.
  */
 
- import express from 'express'
- import cors from 'cors'
- import Api from './app/controllers/api'
- 
- const app = express()
+import express from 'express'
+import cors from 'cors'
+import Api from './app/controllers/api'
 
- //TODO Enable cors for all origins for now
- app.use(cors())
+const app = express()
 
- app.use(Api)
- 
- const port = process.env.port || 3333
+//TODO Enable cors for all origins for now
+app.use(cors())
 
- const server = app.listen(port, () => {
-   console.log(`Listening at http://localhost:${port}/api`)
- })
+app.use(Api)
 
- server.on('error', console.error)
- 
+const port = process.env.port || 3333
+
+const server = app.listen(port, () => {
+  console.log(`Listening at http://localhost:${port}/api`)
+})
+
+server.on('error', console.error)
