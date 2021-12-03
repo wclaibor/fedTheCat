@@ -1,28 +1,37 @@
+import axios from 'axios'
 import * as React from 'react'
+import { useState } from 'react'
 import { StyleSheet } from 'react-native'
-
-import EditScreenInfo from '../components/EditScreenInfo'
+import { Pet } from '../../models/Pet'
 import { Text, View } from '../components/Themed'
 import { RootTabScreenProps } from '../types'
-
-import axios from 'axios'
 
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<'TabOne'>) {
-  axios.get('http://localhost:3333/api/').then(response => {
-    console.log(response)
+  const [pets, setPets] = useState([] as Pet[])
+
+  axios.get('http://localhost:3333/api/pets').then(response => {
+    setPets(response.data)
   })
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      <Text>
+        {pets.map(pet => (
+          <React.Fragment>
+            <h1>{pet.name}</h1>
+            <h2>{pet.petType}</h2>
+            {pet.meals.map(meal => (
+              <React.Fragment>
+                {meal.name}: {meal.time}
+                <br />
+                {meal.description}
+              </React.Fragment>
+            ))}
+          </React.Fragment>
+        ))}
+      </Text>
     </View>
   )
 }
