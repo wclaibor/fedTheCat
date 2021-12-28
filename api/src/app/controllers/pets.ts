@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { Pet, PetType } from '../../../../models/Pet'
+import dbo from '../../../db/conn'
 
 const pets: Pet[] = [
   {
@@ -59,7 +60,15 @@ const pets: Pet[] = [
 const PetsApi = Router()
 
 PetsApi.get('/pets', async (req, res) => {
-  res.send(pets)
+  const db_connect = dbo.getDb()
+
+  db_connect
+    .collection('Pets')
+    .find({})
+    .toArray((err, results) => {
+      if (err) throw err
+      res.json(results)
+    })
 })
 
 export default PetsApi
